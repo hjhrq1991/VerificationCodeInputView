@@ -26,6 +26,9 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntegerRes;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -124,7 +127,7 @@ public class VerificationCodeInputView extends RelativeLayout {
      */
     private int mEtBackground;
     private int mEtFocusBackground;
-    private boolean isFocusBackgroud;
+    private boolean isFocusBackground;
 
     public enum VCInputType {
         /**
@@ -174,7 +177,7 @@ public class VerificationCodeInputView extends RelativeLayout {
         if (mEtBackground < 0) {
             mEtBackground = typedArray.getColor(R.styleable.VerificationCodeInputView_vciv_et_background, Color.WHITE);
         }
-        isFocusBackgroud = typedArray.hasValue(R.styleable.VerificationCodeInputView_vciv_et_foucs_background);
+        isFocusBackground = typedArray.hasValue(R.styleable.VerificationCodeInputView_vciv_et_foucs_background);
         mEtFocusBackground = typedArray.getResourceId(R.styleable.VerificationCodeInputView_vciv_et_foucs_background, -1);
         if (mEtFocusBackground < 0) {
             mEtFocusBackground = typedArray.getColor(R.styleable.VerificationCodeInputView_vciv_et_foucs_background, Color.WHITE);
@@ -192,6 +195,27 @@ public class VerificationCodeInputView extends RelativeLayout {
         mEtUnderLineShow = typedArray.getBoolean(R.styleable.VerificationCodeInputView_vciv_et_underline_show, false);
         initView();
         typedArray.recycle();
+    }
+
+    /**
+     * 设置普通框背景色
+     *
+     * @param background
+     */
+    public void setBackground(@DrawableRes int background) {
+        this.mEtBackground = background;
+        setCursorColor();
+    }
+
+    /**
+     * 设置焦点框背景
+     *
+     * @param background
+     */
+    public void setFocusBackground(@DrawableRes int background) {
+        this.isFocusBackground = true;
+        this.mEtFocusBackground = background;
+        setCursorColor();
     }
 
     private void initView() {
@@ -465,7 +489,7 @@ public class VerificationCodeInputView extends RelativeLayout {
                 View underLineView = mUnderLineViews[i];
                 underLineView.setBackgroundColor(mEtUnderLineDefaultColor);
             }
-            if (isFocusBackgroud) {
+            if (isFocusBackground) {
                 setEtBackground(mRelativeLayouts[i], mEtBackground);
             }
         }
@@ -474,7 +498,7 @@ public class VerificationCodeInputView extends RelativeLayout {
             if (mEtUnderLineShow) {
                 mUnderLineViews[mCodes.size()].setBackgroundColor(mEtUnderLineFocusColor);
             }
-            if (isFocusBackgroud) {
+            if (isFocusBackground) {
                 setEtBackground(mRelativeLayouts[mCodes.size()], mEtFocusBackground);
             }
         }
